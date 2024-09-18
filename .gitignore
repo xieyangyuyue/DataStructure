@@ -131,3 +131,9 @@ CTestTestfile.cmake
 *.ico
 *.dev
 *.layout
+*.win
+*.res
+*.rc
+*.h
+*.debug
+*.bookmarks
