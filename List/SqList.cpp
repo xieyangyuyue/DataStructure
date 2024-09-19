@@ -36,6 +36,26 @@ bool ListInsert(SqList&L, int i, int e) {
 	return true;
 	
 }
+/**
+  按照元素位置删除，使用引用元素值
+ * @param L 顺序表
+ * @param e	使用引用 返回元素值
+ * @param i
+  
+ */
+bool ListDelete(SqList&L, int i, int &e) {
+	if (i < 1 || i > L.length) {			//判断i范围是否有效
+		printf("位序不合法\n");
+		return false;
+	}
+	e = L.data[i - 1];					//被删除的元素赋值e
+	for (int j = i; j < L.length; j++) {
+		L.data[j - 1] = L.data[j];		//将第i个位置后元素前移 覆盖前值
+	}
+	L.length--;
+	printf("已删除第%d个元素，删除元素值为=%d\n", i, e);
+	return true;
+}
 
 void printList(SqList&L) {
 	for (int i = 0; i < MaxSize; i++) {
@@ -51,6 +71,9 @@ int main() {
 	ListInsert(L, 2, 4);
 	ListInsert(L, 3, 5);
 	ListInsert(L, 4, 6);
+	//删除返回值
+	int e = -1;
+	ListDelete(L, 2, e);
 	printList(L);	//打印顺序表
 	return 0;
 }
