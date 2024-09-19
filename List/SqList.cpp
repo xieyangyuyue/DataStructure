@@ -1,8 +1,8 @@
 /*
 顺序表的实现--静态分配
 */
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 #define MaxSize 10  //定义最大长度
 typedef struct {
 	int data[MaxSize];//用静态数组存放数据元素
@@ -18,7 +18,7 @@ void InitList(SqList&L) {
 }
 
 /**
-  
+
  * @param L 顺序表
  * @param e 插入值
  * @param i 位置插入
@@ -34,14 +34,14 @@ bool ListInsert(SqList&L, int i, int e) {
 	L.data[i - 1] = e;								//在位置i处放入e
 	L.length++;
 	return true;
-	
+
 }
 /**
   按照元素位置删除，使用引用元素值
  * @param L 顺序表
  * @param e	使用引用 返回元素值
  * @param i
-  
+
  */
 bool ListDelete(SqList&L, int i, int &e) {
 	if (i < 1 || i > L.length) {			//判断i范围是否有效
@@ -55,6 +55,27 @@ bool ListDelete(SqList&L, int i, int &e) {
 	L.length--;
 	printf("已删除第%d个元素，删除元素值为=%d\n", i, e);
 	return true;
+}
+/**顺序表位序查找
+ * @param L 顺序表
+ * @param i 元素位置
+ *
+ * @return 返回表中第i个位置的元素的值
+ */
+void GetElem(SqList L, int i) {
+	if (i < 1 || i > L.length) {			//判断i范围是否有效
+		printf("位序不合法\n");
+	}
+	printf("表中第%d个位置的元素的值=%d\n", i, L.data[i - 1]);
+}
+
+//按值查找
+void  LocateElem(SqList L, int e) {
+	for (int i = 0; i < L.length; i++) {
+		if (L.data[i] == e) {
+			printf("表中元素的值为%d在第%d个位置的\n", e, i + 1);
+		}
+	}
 }
 
 void printList(SqList&L) {
@@ -74,6 +95,8 @@ int main() {
 	//删除返回值
 	int e = -1;
 	ListDelete(L, 2, e);
+	GetElem(L, 4);		//顺序表位序查找
+	LocateElem(L, 3); //按值查找
 	printList(L);	//打印顺序表
 	return 0;
 }
