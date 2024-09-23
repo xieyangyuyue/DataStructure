@@ -52,7 +52,83 @@ LNode* GetElem(LinkList L, int i) {
 	return p;
 }
 
+//前插操作:在p结点之前插入元素e
+bool InsertPriorNode(LNode* p, int e) {
+	if (p == NULL) return false;
+	LNode* prior = (LNode*)malloc(sizeof(LNode));
+	if (prior == NULL) return false;
+	prior->next = p->next;
+	p->next = prior;
+	//prior结点在p后面 将p结点的数据复制到prior位置，p结点填充e
+	prior->data = p->data;
+	p->data = e;
+	return true;
+}
 
+//后插操作：在p结点之后插入元素e
+bool InsertNextNode(LNode* p, int e) {
+	if (p == NULL) return false;
+	LNode* s = (LNode*)malloc (sizeof(LNode));
+	if (s == NULL) return false;
+	s->data = e;		//结点保存数据元素e
+	s->next = p->next;
+	p->next = s;		//将结点s连接到p之后
+	return true;
+}
+
+//在第i个位置插入元素e(带头结点)
+bool ListInsert(LinkList &L, int i, int e) {
+	if (i < 1) return false;
+	LNode *cur = L;	//指针cur指向当前 L指向头结点
+	int j = 0;		//当前cur指向第几个结点
+	while (cur != NULL && j < i - 1) { //循环找到第i-1个结点
+		cur = cur->next;
+		j++;
+	}
+	//后插操作：在p结点之后插入元素e
+	return InsertNextNode(cur, e);
+}
+
+/**
+ * @brief 按位序删除 有头结点
+ *
+ * @param L
+ * @param e 删除值
+ * @param i 位序
+ *
+ */
+bool ListDelete(LinkList &L, int i, int &e) {
+	if (i < 1) return false;
+	LNode *pre = L;	//指针cur指向当前 L指向头结点
+	int j = 0;		//当前cur指向第几个结点
+	while (pre != NULL && j < i - 1) { //循环找到第i-1个结点
+		pre = pre->next;
+		j++;
+	}
+	//结点位置不对
+	if (!pre || !pre->next) return false;
+	LNode* temp = pre->next;
+	e = temp->data;
+	pre->next = temp->next;
+	free(temp);
+	return true;
+}
+/**
+ * @brief 按指定节点删除
+ *
+ * @param p 删除结点
+ */
+bool DeleteNode(LNode* p) {
+
+	if (p == NULL) return false;
+	LNode*temp = p->next;
+	//p结点数据被temp数据覆盖
+	p->data = temp->data;
+	//将temp链接断开
+	p->next = temp->next;
+	free(temp);
+	return true;
+}
 
 int main() {
 	LinkList L;	//声明一个指向单链表的指针
