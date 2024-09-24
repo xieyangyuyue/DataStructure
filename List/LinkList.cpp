@@ -86,6 +86,21 @@ bool ListInsert(LinkList &L, int i, int e) {
 	return InsertNextNode(cur, e);
 }
 
+// 尾插法
+bool ListInsertTail(LinkList &L, int e) {
+	LNode* newNode = (LNode *)malloc(sizeof(LNode)); // 创建新节点
+	if (newNode == NULL) return false; // 内存分配失败
+	newNode->data = e; // 设置值
+	newNode->next = NULL; // 新节点指向NULL
+
+	LNode* cur = L; // 从头结点开始遍历
+	while (cur->next != NULL) { // 找到最后一个节点
+		cur = cur->next;
+	}
+	cur->next = newNode; // 将新节点链接到最后一个节点
+	return true; // 成功插入
+}
+
 /**
  * @brief 按位序删除 有头结点
  *
@@ -125,7 +140,57 @@ bool DeleteNode(LNode *p) {
 	return true;
 }
 
+// 遍历链表并打印所有元素
+void PrintList(LinkList L) {
+	LNode* cur = L->next; // 从头结点的下
+	// 从头结点的下一个节点开始
+	while (cur != NULL) {
+		printf("%d -> ", cur->data);
+		cur = cur->next;
+	}
+	printf("NULL\n"); // 结束标志
+}
+
+
 int main() {
-	LinkList L;	 // 声明一个指向单链表的指针
-	InitList(L); // 初始化一个空表
+	LinkList L;  // 声明一个指向单链表的指针
+	if (!InitList(L)) {
+		printf("Failed to initialize list.\n");
+		return -1;
+	}
+
+	// 使用尾插法插入元素
+	ListInsertTail(L, 10);
+	ListInsertTail(L, 20);
+	ListInsertTail(L, 30);
+	PrintList(L); // 打印链表
+
+	// 插入到指定位置
+	ListInsert(L, 2, 15); // 在位置2插入15
+	PrintList(L); // 打印链表
+
+	// 删除元素
+	int deletedValue;
+	if (ListDelete(L, 3, deletedValue)) {
+		printf("Deleted value: %d\n", deletedValue);
+	} else {
+		printf("Failed to delete value at position 3.\n");
+	}
+
+	// 打印链表
+	PrintList(L); // 打印链表
+
+	// 再次使用尾插法插入元素
+	ListInsertTail(L, 25);
+	PrintList(L); // 打印链表
+
+	// 清理内存
+	LNode* cur = L;
+	while (cur != NULL) {
+		LNode* next = cur->next; // 保存下一个节点
+		free(cur); // 释放当前节点
+		cur = next; // 移动到下一个节点
+	}
+
+	return 0; // 程序结束
 }
